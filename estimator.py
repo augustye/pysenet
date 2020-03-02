@@ -1,11 +1,14 @@
 import os
 import cv2
 import numpy as np 
-import tensorflow as tf
 import queue
 import random
 import json
 
+try:
+    import tflite_runtime.interpreter as tflite
+except:
+    import tensorflow.lite as tflite
 
 partNames = [
     "nose",
@@ -266,7 +269,7 @@ def add_vec2(a,b):
 class Estimator():
 
     def __init__(self, _stride, _model_path, _threshold, _max_detection, _nmsr, lmr):
-        self.interpreter = tf.lite.Interpreter(model_path = _model_path)
+        self.interpreter = tflite.Interpreter(model_path = _model_path)
         self.interpreter.allocate_tensors()
 
         self.input_detail = self.interpreter.get_input_details()
